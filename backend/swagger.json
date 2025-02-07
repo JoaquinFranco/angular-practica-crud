@@ -1,0 +1,461 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/cars": {
+      "get": {
+        "operationId": "CarsController_getAllCars",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of cars",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CarSummary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all cars",
+        "tags": [
+          "cars"
+        ]
+      },
+      "post": {
+        "operationId": "CarsController_createCar",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCarDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Car created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error creating car"
+          }
+        },
+        "summary": "Create a new car",
+        "tags": [
+          "cars"
+        ]
+      }
+    },
+    "/cars/{id}": {
+      "get": {
+        "operationId": "CarsController_getCarById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Car ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Car found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found"
+          }
+        },
+        "summary": "Get a car by ID",
+        "tags": [
+          "cars"
+        ]
+      },
+      "put": {
+        "operationId": "CarsController_updateCar",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Car ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCarDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Car updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found"
+          }
+        },
+        "summary": "Update a car",
+        "tags": [
+          "cars"
+        ]
+      },
+      "delete": {
+        "operationId": "CarsController_deleteCar",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Car ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Car deleted"
+          },
+          "404": {
+            "description": "Car not found"
+          }
+        },
+        "summary": "Delete a car",
+        "tags": [
+          "cars"
+        ]
+      }
+    },
+    "/seed": {
+      "get": {
+        "description": "Triggers the seeding of the database with predefined data.",
+        "operationId": "SeedController_populateDB",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Database populated successfully"
+          },
+          "500": {
+            "description": "Error while populating the database"
+          }
+        },
+        "summary": "Populate the database with initial data",
+        "tags": [
+          "seed"
+        ]
+      }
+    },
+    "/brands": {
+      "get": {
+        "operationId": "BrandsController_getAllBrands",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of car brands",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all car brands",
+        "tags": [
+          "brands"
+        ]
+      }
+    },
+    "/brands/{brandId}/models": {
+      "get": {
+        "operationId": "BrandsController_getModelsByBrand",
+        "parameters": [
+          {
+            "name": "brandId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of models for the specified brand",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get models by car brand",
+        "tags": [
+          "brands"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Angular CRUD Project API",
+    "description": "API for managing car and brand endpoints",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "CarSummary": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "Car brand",
+            "maxLength": 50,
+            "example": "Toyota"
+          },
+          "model": {
+            "type": "string",
+            "description": "Car model",
+            "maxLength": 50,
+            "example": "Corolla"
+          },
+          "id": {
+            "type": "string",
+            "description": "Car ID"
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of cars"
+          }
+        },
+        "required": [
+          "brand",
+          "model",
+          "id",
+          "total"
+        ]
+      },
+      "CarDetailsDto": {
+        "type": "object",
+        "properties": {
+          "registrationDate": {
+            "type": "string",
+            "description": "Car registration date",
+            "example": "2024-10-30T10:01:35.288Z"
+          },
+          "mileage": {
+            "type": "number",
+            "description": "Car mileage",
+            "example": 15000
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency of the price",
+            "enum": [
+              "EUR",
+              "GBP",
+              "CHF",
+              "SEK",
+              "NOK",
+              "DKK",
+              "PLN",
+              "CZK",
+              "HUF",
+              "RON",
+              "BGN",
+              "HRK",
+              "ARS",
+              "BRL",
+              "CLP",
+              "COP",
+              "PEN",
+              "UYU",
+              "PYG",
+              "BOB",
+              "VES",
+              "USD",
+              "CAD",
+              "MXN",
+              "JPY",
+              "CNY",
+              "INR",
+              "KRW",
+              "SGD",
+              "HKD",
+              "MYR",
+              "IDR",
+              "THB",
+              "VND",
+              "PKR",
+              "AUD",
+              "NZD",
+              "ZAR",
+              "EGP",
+              "NGN",
+              "KES",
+              "GHS"
+            ],
+            "example": "USD"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price of the car",
+            "example": 20000
+          },
+          "manufactureYear": {
+            "type": "number",
+            "description": "Year of manufacture of the car",
+            "example": 2020
+          },
+          "availability": {
+            "type": "boolean",
+            "description": "Indicates if the car is available for sale",
+            "example": true
+          },
+          "licensePlate": {
+            "type": "string",
+            "description": "Car license plate",
+            "example": "1234 ABC"
+          }
+        },
+        "required": [
+          "registrationDate",
+          "mileage",
+          "currency",
+          "price",
+          "manufactureYear",
+          "availability",
+          "licensePlate"
+        ]
+      },
+      "Car": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "Car brand",
+            "maxLength": 50,
+            "example": "Toyota"
+          },
+          "model": {
+            "type": "string",
+            "description": "Car model",
+            "maxLength": 50,
+            "example": "Corolla"
+          },
+          "carDetails": {
+            "description": "Car details",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CarDetailsDto"
+            }
+          },
+          "id": {
+            "type": "string",
+            "description": "Car ID"
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of cars"
+          }
+        },
+        "required": [
+          "brand",
+          "model",
+          "carDetails",
+          "id",
+          "total"
+        ]
+      },
+      "CreateCarDto": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "Car brand",
+            "maxLength": 50,
+            "example": "Toyota"
+          },
+          "model": {
+            "type": "string",
+            "description": "Car model",
+            "maxLength": 50,
+            "example": "Corolla"
+          },
+          "carDetails": {
+            "description": "Car details",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CarDetailsDto"
+            }
+          }
+        },
+        "required": [
+          "brand",
+          "model",
+          "carDetails"
+        ]
+      }
+    }
+  },
+  "security": [
+    {
+      "bearer": []
+    }
+  ]
+}

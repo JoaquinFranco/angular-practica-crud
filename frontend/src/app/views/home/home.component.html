@@ -1,0 +1,26 @@
+<div class="container">
+  <div>
+    <button (click)="createCar()">Crear coche</button>
+  </div>
+  <table>
+    <caption>
+      <h3>Coches</h3>
+    </caption>
+    <tr>
+      <th>Modelo</th>
+      <th>Marca</th>
+      <th>Detalle</th>
+    </tr>
+    @for (car of cars; track car.id) {
+    <tr>
+      <td>{{ car.model }}</td>
+      <td>{{ car.brand }}</td>
+      <td>
+        <button (click)="loadCar(car.id)">Mostrar información</button>
+      </td>
+    </tr>
+    }@empty {
+    <span>noResults</span>
+    }
+  </table>
+</div>
